@@ -1,5 +1,6 @@
 use core::fmt::{self, Write};
 
+use lazy_static::lazy_static;
 use volatile::Volatile;
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -125,8 +126,10 @@ impl Write for Writer {
     }
 }
 
-pub static WRITER: Writer = Writer {
-    column_position: 0,
-    color_code: ColorCode::new(Color::Yellow, Color::Black),
-    buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-};
+lazy_static! {
+    pub static ref WRITER: Writer = Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::Yellow, Color::Black),
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+    };
+}
