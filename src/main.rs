@@ -12,10 +12,6 @@ pub extern "C" fn _start() -> ! {
     println!("Hello world! {}", "!");
 
     mos::init();
-    fn stack_overflow() {
-        stack_overflow();
-    }
-    stack_overflow();
 
     x86_64::instructions::interrupts::int3();
 
