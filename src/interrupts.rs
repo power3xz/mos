@@ -41,3 +41,19 @@ extern "x86-interrupt" fn double_fault_handler(
 fn test_breakpoint_exception() {
     x86_64::instructions::interrupts::int3();
 }
+
+#[derive(Debug, Clone, Copy)]
+#[repr(u8)]
+pub enum InterruptIndex {
+    Timer = PIC_1_OFFSET,
+}
+
+impl InterruptIndex {
+    fn as_u8(self) -> u8 {
+        self as u8
+    }
+
+    fn as_usize(self) -> usize {
+        usize::from(self.as_u8())
+    }
+}
