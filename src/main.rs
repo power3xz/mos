@@ -11,9 +11,14 @@ use mos::println;
 pub extern "C" fn _start() -> ! {
     println!("Hello world! {}", "!");
 
+    mos::init();
+
+    x86_64::instructions::interrupts::int3();
+
     #[cfg(test)]
     test_main();
 
+    println!("It dit not crash!");
     loop {}
 }
 #[cfg(not(test))]

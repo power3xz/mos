@@ -69,3 +69,7 @@ pub extern "C" fn _start() -> ! {
 fn panic(info: &PanicInfo) -> ! {
     test_panic_handler(info)
 }
+
+pub fn init() {
+    interrupts::init_idt();
+}
