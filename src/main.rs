@@ -11,6 +11,7 @@ use alloc::boxed::Box;
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use mos::{
+    allocator,
     memory::{self, BootInfoFrameAllocator},
     println,
 };
@@ -27,6 +28,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let mut mapper = unsafe { memory::init(phys_mem_offset) };
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
 
+    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
+    let x = Box::new(41);
     let page = Page::containing_address(VirtAddr::new(0));
     memory::create_example_mapping(page, &mut mapper, &mut frame_allocator);
 
@@ -35,8 +38,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     #[cfg(test)]
     test_main();
-
-    let x = Box::new(41);
 
     println!("It dit not crash!");
     mos::hlt_loop();
