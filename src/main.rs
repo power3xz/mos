@@ -4,6 +4,10 @@
 #![test_runner(mos::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+extern crate alloc;
+
+use alloc::boxed::Box;
+
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use mos::{
@@ -31,6 +35,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     #[cfg(test)]
     test_main();
+
+    let x = Box::new(41);
 
     println!("It dit not crash!");
     mos::hlt_loop();
