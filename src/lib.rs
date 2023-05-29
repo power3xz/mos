@@ -13,7 +13,7 @@ pub mod vga_buffer;
 use core::panic::PanicInfo;
 
 #[cfg(test)]
-use bootloader::entry_point;
+use bootloader::{entry_point, BootInfo};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -71,7 +71,7 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 entry_point!(test_kernel_main);
 
 #[cfg(test)]
-fn test_kernel_main() -> ! {
+fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     init();
     test_main();
     hlt_loop();
