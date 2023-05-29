@@ -12,6 +12,9 @@ pub mod vga_buffer;
 
 use core::panic::PanicInfo;
 
+#[cfg(test)]
+use bootloader::entry_point;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 pub enum QemuExitCode {
@@ -65,8 +68,10 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 }
 
 #[cfg(test)]
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
+entry_point!(test_kernel_main);
+
+#[cfg(test)]
+fn test_kernel_main() -> ! {
     init();
     test_main();
     hlt_loop();

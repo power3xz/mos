@@ -4,11 +4,13 @@
 #![test_runner(mos::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use mos::println;
 
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
+entry_point!(kernel_main);
+
+fn kernel_main(boot_info: &'static BootInfo) -> ! {
     println!("Hello world! {}", "!");
 
     mos::init();
