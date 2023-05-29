@@ -1,3 +1,4 @@
+use bootloader::bootinfo::MemoryMap;
 use x86_64::{
     registers::control::Cr3,
     structures::paging::{
@@ -40,5 +41,19 @@ pub struct EmptyFrameAllocator;
 unsafe impl FrameAllocator<Size4KiB> for EmptyFrameAllocator {
     fn allocate_frame(&mut self) -> Option<PhysFrame> {
         None
+    }
+}
+
+pub struct BootInfoFrameAllocator {
+    memory_map: &'static MemoryMap,
+    next: usize,
+}
+
+impl BootInfoFrameAllocator {
+    pub unsafe fn init(memory_map: &'static MemoryMap) -> Self {
+        BootInfoFrameAllocator {
+            memory_map,
+            next: 0,
+        }
     }
 }
